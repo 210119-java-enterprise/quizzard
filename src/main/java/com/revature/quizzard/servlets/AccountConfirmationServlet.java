@@ -40,7 +40,7 @@ public class AccountConfirmationServlet extends HttpServlet {
                 int userId = Integer.parseInt(userIdParam);
                 LOG.info("Attempting to confirm account with id, {}", userId);
                 USER_SERVICE.confirmAccount(userId);
-                LOG.info("Account belonging to user with id, {}, successfully confirmed.");
+                LOG.info("Account belonging to user with id, {}, successfully confirmed.", userId);
                 resp.sendRedirect(APP_URL);
             } else {
                 throw new InvalidRequestException();
