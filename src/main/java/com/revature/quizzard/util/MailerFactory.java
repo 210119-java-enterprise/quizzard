@@ -12,19 +12,8 @@ public class MailerFactory {
 
     private static final MailerFactory MAILER_FACTORY = new MailerFactory();
 
-    private Properties props = new Properties();
-
     private MailerFactory() {
         super();
-
-        try {
-            ClassLoader loader = Thread.currentThread().getContextClassLoader();
-            InputStream input = loader.getResourceAsStream("application.properties");
-            props.load(input);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
     }
 
     public static MailerFactory getInstance() {
