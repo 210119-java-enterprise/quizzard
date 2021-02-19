@@ -1,0 +1,89 @@
+---
+#
+# The purpose of this stack template is to provide the infrastructure needed to
+# enable developers to be notified of updated build statuses via Slack.
+#
+
+Resources:
+  # Role that our Lambda will assume to provide access to other AWS resources
+  IamRoleLambdaExecution:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: '/'
+
+  # Create a Policy and attach it to our Lambda Role.
+  IamPolicyLambdaExecution:
+    Type: AWS::IAM::Policy
+    DependsOn: IamRoleLambdaExecution
+    Properties:
+      PolicyName: IamPolicyLambdaExecution
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+            - logs:*
+          Resource: '*'
+      Roles:
+      - Ref: IamRoleLambdaExecution
+
+  # Lambda Function
+  SlackFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: slack.handler
+      Timeout: 5
+      Role:
+        Fn::GetAtt:
+          - IamRoleLambdaExecution
+          - Arn
+      Code:
+        S3Bucket: 'slack-integration-lambda'
+        S3Key: 'slack.js.zip'
+      Runtime: nodejs10.x
+      Environment:
+        Variables:
+          SLACK_HOOK_URL: 'https://hooks.slack.com/services/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'
+
+  # CloudWatch Event to trigger Lambda for build Slack notifications.
+  BuildEventRule:
+    Type: 'AWS::Events::Rule'
+    Properties:
+      Description: 'BuildEventRule'
+      EventPattern:
+        source:
+          - 'aws.codebuild'
+        detail-type:
+          - 'CodeBuild Build State Change'
+        detail:
+          project-name:
+            - 'quizzard-api-build'
+              
+          build-status:
+            - 'IN_PROGRESS'
+            - 'SUCCEEDED'
+            - 'FAILED'
+            - 'STOPPED'
+      State: 'ENABLED'
+      Targets:
+        -
+          Arn: !GetAtt SlackFunction.Arn
+          Id: 'BuildRuleLambdaTarget'
+            
+  # Permission for CloudWatch to invoke our Lambda
+  PermissionForBuildEventsToInvokeLambda:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      FunctionName: !Ref SlackFunction
+      Action: 'lambda:InvokeFunction'
+      Principal: 'events.amazonaws.com'
+      SourceArn: !GetAtt BuildEventRule.Arn
