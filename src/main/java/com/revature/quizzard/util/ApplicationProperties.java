@@ -23,7 +23,7 @@ public class ApplicationProperties {
 
         try {
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
-            InputStream input = loader.getResourceAsStream("application.properties");
+            InputStream input = loader.getResourceAsStream("old_config/application.properties");
             APP_PROPS.load(input);
         } catch (IOException e) {
             e.printStackTrace();
