@@ -2,6 +2,7 @@ package com.revature.quizzard.web.controllers;
 
 import com.revature.quizzard.dtos.ErrorResponse;
 import com.revature.quizzard.dtos.QuizzardHttpStatus;
+import com.revature.quizzard.exceptions.InvalidRequestException;
 import com.revature.quizzard.exceptions.ResourceNotFoundException;
 import com.revature.quizzard.exceptions.ResourcePersistenceException;
 import com.revature.quizzard.entities.User;
@@ -39,6 +40,12 @@ public class UserController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public void createNewUser(@RequestBody User newUser) {
         userService.register(newUser);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleInvalidRequestException(InvalidRequestException e) {
+        return ErrorResponseFactory.getInstance().generateErrorResponse(QuizzardHttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
