@@ -1,13 +1,30 @@
 package com.revature.quizzard.models;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
 public class Flashcard {
 
+    @Id @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(nullable = false)
     private String question;
+
+    @Column(nullable = false)
     private String answer;
+
+    @Enumerated(EnumType.STRING)
     private Category category;
+
+    @ManyToOne @JoinColumn
+    private User creator;
+
+    public Flashcard() {
+        super();
+    }
 
     public Flashcard(String question, String answer) {
         this.id = 0;

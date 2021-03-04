@@ -2,18 +2,40 @@ package com.revature.quizzard.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
+@Entity @Table(name = "app_users")
 public class User {
 
+    @Id @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(nullable = false, unique = true)
     private String username;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(name = "first_name", nullable = false)
     private String firstName;
+
+    @Column(name = "last_name", nullable = false)
     private String lastName;
+
+    @Enumerated(value = EnumType.STRING)
     private Role role;
+
+    @Column(name = "confirmed", columnDefinition = "boolean default false")
     private boolean accountConfirmed;
+
+    @OneToMany(mappedBy = "creator")
+    private List<Flashcard> userFlashcards;
 
     public User() {
         id = 0;
