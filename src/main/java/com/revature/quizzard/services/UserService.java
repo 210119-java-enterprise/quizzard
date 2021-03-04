@@ -19,12 +19,15 @@ public class UserService {
     private UserRepository userRepo;
 
     @Autowired
-    private UserService(UserRepository repo) {
+    public UserService(UserRepository repo) {
         super();
         this.userRepo = repo;
     }
 
     public User getUserById(int id) {
+        if (id <= 0 ) {
+            throw new InvalidRequestException();
+        }
         return userRepo.findById(id).orElseThrow(ResourceNotFoundException::new);
     }
 
