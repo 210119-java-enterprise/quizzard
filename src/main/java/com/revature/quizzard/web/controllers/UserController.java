@@ -3,8 +3,8 @@ package com.revature.quizzard.web.controllers;
 import com.revature.quizzard.dtos.ErrorResponse;
 import com.revature.quizzard.dtos.QuizzardHttpStatus;
 import com.revature.quizzard.exceptions.ResourceNotFoundException;
-import com.revature.quizzard.models.Role;
-import com.revature.quizzard.models.User;
+import com.revature.quizzard.exceptions.ResourcePersistenceException;
+import com.revature.quizzard.entities.User;
 import com.revature.quizzard.services.UserService;
 import com.revature.quizzard.util.ErrorResponseFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Set<User> getAllUsers() {
+    public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
@@ -41,10 +41,16 @@ public class UserController {
         userService.register(newUser);
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleResourceNotFoundException(ResourceNotFoundException e) {
         return ErrorResponseFactory.getInstance().generateErrorResponse(QuizzardHttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleResourcePersistenceException(ResourcePersistenceException e) {
+        return ErrorResponseFactory.getInstance().generateErrorResponse(QuizzardHttpStatus.CONFLICT);
     }
 
     // Included for posterity
