@@ -1,6 +1,7 @@
 package com.revature.quizzard.web.controllers;
 
 import com.revature.quizzard.dtos.ErrorResponse;
+import com.revature.quizzard.dtos.QuizzardHttpStatus;
 import com.revature.quizzard.exceptions.ResourceNotFoundException;
 import com.revature.quizzard.models.Role;
 import com.revature.quizzard.models.User;
@@ -10,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,8 +57,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler
     public ErrorResponse handleResourceNotFoundException(ResourceNotFoundException e) {
-        return ErrorResponseFactory.getInstance().generateErrorResponse(
-                com.revature.quizzard.dtos.HttpStatus.NOT_FOUND);
+        return ErrorResponseFactory.getInstance().generateErrorResponse(QuizzardHttpStatus.NOT_FOUND);
     }
 
 }

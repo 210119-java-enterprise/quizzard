@@ -1,7 +1,7 @@
 package com.revature.quizzard.util;
 
 import com.revature.quizzard.dtos.ErrorResponse;
-import com.revature.quizzard.dtos.HttpStatus;
+import com.revature.quizzard.dtos.QuizzardHttpStatus;
 
 public class ErrorResponseFactory {
 
@@ -19,7 +19,7 @@ public class ErrorResponseFactory {
         return new ErrorResponse(status, message, System.currentTimeMillis());
     }
 
-    public ErrorResponse generateErrorResponse(HttpStatus status) {
+    public ErrorResponse generateErrorResponse(QuizzardHttpStatus status) {
         return new ErrorResponse(status.getStatus(), status.toString(), System.currentTimeMillis());
     }
 

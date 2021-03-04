@@ -1,6 +1,6 @@
 package com.revature.quizzard.dtos;
 
-public enum HttpStatus {
+public enum QuizzardHttpStatus {
 
     OK(200, "Request understood and processed successfully"),
     CREATED(201, "A new resource was created"),
@@ -15,7 +15,7 @@ public enum HttpStatus {
     private int status;
     private String message;
 
-    HttpStatus(int status, String message) {
+    QuizzardHttpStatus(int status, String message) {
         this.status = status;
         this.message = message;
     }

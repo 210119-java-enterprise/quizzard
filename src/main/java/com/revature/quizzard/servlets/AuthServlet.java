@@ -3,10 +3,9 @@ package com.revature.quizzard.servlets;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.revature.quizzard.dtos.Credentials;
-import com.revature.quizzard.dtos.HttpStatus;
+import com.revature.quizzard.dtos.QuizzardHttpStatus;
 import com.revature.quizzard.exceptions.AuthenticationException;
 import com.revature.quizzard.models.User;
-import com.revature.quizzard.repos.UserRepository;
 import com.revature.quizzard.services.UserService;
 import com.revature.quizzard.util.ErrorResponseFactory;
 import org.apache.logging.log4j.LogManager;
@@ -64,7 +63,7 @@ public class AuthServlet extends HttpServlet {
             e.printStackTrace();
             LOG.warn(e.getMessage());
             resp.setStatus(400);
-            writer.write(errRespFactory.generateErrorResponse(HttpStatus.BAD_REQUEST).toJSON());
+            writer.write(errRespFactory.generateErrorResponse(QuizzardHttpStatus.BAD_REQUEST).toJSON());
         } catch (AuthenticationException e) {
             e.printStackTrace();
             resp.setStatus(401);
@@ -73,7 +72,7 @@ public class AuthServlet extends HttpServlet {
             e.printStackTrace();
             LOG.error(e.getMessage());
             resp.setStatus(500);
-            writer.write(errRespFactory.generateErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR).toJSON());
+            writer.write(errRespFactory.generateErrorResponse(QuizzardHttpStatus.INTERNAL_SERVER_ERROR).toJSON());
         }
 
     }

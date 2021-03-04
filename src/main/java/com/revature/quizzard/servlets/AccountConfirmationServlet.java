@@ -1,10 +1,9 @@
 package com.revature.quizzard.servlets;
 
-import com.revature.quizzard.dtos.HttpStatus;
+import com.revature.quizzard.dtos.QuizzardHttpStatus;
 import com.revature.quizzard.exceptions.InvalidRequestException;
 import com.revature.quizzard.exceptions.ResourceNotFoundException;
 import com.revature.quizzard.services.UserService;
-import com.revature.quizzard.util.ApplicationProperties;
 import com.revature.quizzard.util.ErrorResponseFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -49,15 +48,15 @@ public class AccountConfirmationServlet extends HttpServlet {
         } catch (NumberFormatException | InvalidRequestException e) {
             LOG.warn(e.getMessage());
             resp.setStatus(400);
-            writer.write(errRespFactory.generateErrorResponse(HttpStatus.BAD_REQUEST).toJSON());
+            writer.write(errRespFactory.generateErrorResponse(QuizzardHttpStatus.BAD_REQUEST).toJSON());
         } catch (ResourceNotFoundException e) {
             LOG.warn(e.getMessage());
             resp.setStatus(404);
-            writer.write(errRespFactory.generateErrorResponse(HttpStatus.NOT_FOUND).toJSON());
+            writer.write(errRespFactory.generateErrorResponse(QuizzardHttpStatus.NOT_FOUND).toJSON());
         } catch (Exception e) {
             LOG.error(e.getMessage());
             resp.setStatus(500);
-            writer.write(errRespFactory.generateErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR).toJSON());
+            writer.write(errRespFactory.generateErrorResponse(QuizzardHttpStatus.INTERNAL_SERVER_ERROR).toJSON());
         }
     }
 }

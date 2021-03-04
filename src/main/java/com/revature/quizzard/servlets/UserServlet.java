@@ -2,7 +2,7 @@ package com.revature.quizzard.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import com.revature.quizzard.dtos.HttpStatus;
+import com.revature.quizzard.dtos.QuizzardHttpStatus;
 import com.revature.quizzard.exceptions.ResourceNotFoundException;
 import com.revature.quizzard.exceptions.ResourcePersistenceException;
 import com.revature.quizzard.models.User;
@@ -67,11 +67,11 @@ public class UserServlet extends HttpServlet {
                 if (rqstr == null) {
                     LOG.warn("Unauthorized request made by unknown requester");
                     resp.setStatus(401);
-                    writer.write(errRespFactory.generateErrorResponse(HttpStatus.UNAUTHORIZED).toJSON());
+                    writer.write(errRespFactory.generateErrorResponse(QuizzardHttpStatus.UNAUTHORIZED).toJSON());
                 } else {
                     LOG.warn("Request made by requester, {}, who lacks proper authorities", rqstr.getUsername());
                     resp.setStatus(403);
-                    writer.write(errRespFactory.generateErrorResponse(HttpStatus.FORBIDDEN).toJSON());
+                    writer.write(errRespFactory.generateErrorResponse(QuizzardHttpStatus.FORBIDDEN).toJSON());
                 }
 
             }
@@ -80,17 +80,17 @@ public class UserServlet extends HttpServlet {
             e.printStackTrace();
             LOG.warn(e.getMessage());
             resp.setStatus(400);
-            writer.write(errRespFactory.generateErrorResponse(HttpStatus.BAD_REQUEST).toJSON());
+            writer.write(errRespFactory.generateErrorResponse(QuizzardHttpStatus.BAD_REQUEST).toJSON());
         } catch (ResourceNotFoundException e) {
             e.printStackTrace();
             LOG.warn(e.getMessage());
             resp.setStatus(404);
-            writer.write(errRespFactory.generateErrorResponse(HttpStatus.NOT_FOUND).toJSON());
+            writer.write(errRespFactory.generateErrorResponse(QuizzardHttpStatus.NOT_FOUND).toJSON());
         } catch (Exception e) {
             e.printStackTrace();
             LOG.error(e.getMessage());
             resp.setStatus(500);
-            writer.write(errRespFactory.generateErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR).toJSON());
+            writer.write(errRespFactory.generateErrorResponse(QuizzardHttpStatus.INTERNAL_SERVER_ERROR).toJSON());
         }
 
     }
@@ -114,16 +114,16 @@ public class UserServlet extends HttpServlet {
         } catch (MismatchedInputException e) {
             LOG.warn(e.getMessage());
             resp.setStatus(400); // bad request
-            writer.write(errRespFactory.generateErrorResponse(HttpStatus.BAD_REQUEST).toJSON());
+            writer.write(errRespFactory.generateErrorResponse(QuizzardHttpStatus.BAD_REQUEST).toJSON());
         } catch (ResourcePersistenceException e) {
             LOG.warn(e.getMessage());
             resp.setStatus(409); // conflict
-            writer.write(errRespFactory.generateErrorResponse(HttpStatus.CONFLICT).toJSON());
+            writer.write(errRespFactory.generateErrorResponse(QuizzardHttpStatus.CONFLICT).toJSON());
         } catch (Exception e) {
             e.printStackTrace();
             LOG.error(e.getMessage());
             resp.setStatus(500); // internal server error
-            writer.write(errRespFactory.generateErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR).toJSON());
+            writer.write(errRespFactory.generateErrorResponse(QuizzardHttpStatus.INTERNAL_SERVER_ERROR).toJSON());
         }
 
     }
@@ -153,27 +153,27 @@ public class UserServlet extends HttpServlet {
                 } else {
                     LOG.warn("Request made by requester, {}, who lacks proper authorities", rqstr.getUsername());
                     resp.setStatus(403);
-                    writer.write(errRespFactory.generateErrorResponse(HttpStatus.FORBIDDEN).toJSON());
+                    writer.write(errRespFactory.generateErrorResponse(QuizzardHttpStatus.FORBIDDEN).toJSON());
                 }
 
             } else {
                 LOG.warn("Unauthorized request made by unknown requester");
                 resp.setStatus(401);
-                writer.write(errRespFactory.generateErrorResponse(HttpStatus.UNAUTHORIZED).toJSON());
+                writer.write(errRespFactory.generateErrorResponse(QuizzardHttpStatus.UNAUTHORIZED).toJSON());
             }
 
         } catch (MismatchedInputException e) {
             LOG.warn(e.getMessage());
             resp.setStatus(400);
-            writer.write(errRespFactory.generateErrorResponse(HttpStatus.BAD_REQUEST).toJSON());
+            writer.write(errRespFactory.generateErrorResponse(QuizzardHttpStatus.BAD_REQUEST).toJSON());
         } catch (ResourcePersistenceException e) {
             LOG.warn(e.getMessage());
             resp.setStatus(409);
-            writer.write(errRespFactory.generateErrorResponse(HttpStatus.CONFLICT).toJSON());
+            writer.write(errRespFactory.generateErrorResponse(QuizzardHttpStatus.CONFLICT).toJSON());
         } catch (Exception e) {
             LOG.error(e.getMessage());
             resp.setStatus(500);
-            writer.write(errRespFactory.generateErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR).toJSON());
+            writer.write(errRespFactory.generateErrorResponse(QuizzardHttpStatus.INTERNAL_SERVER_ERROR).toJSON());
         }
 
     }
