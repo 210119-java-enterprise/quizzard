@@ -1,12 +1,13 @@
 package com.revature.quizzard.util;
 
-import com.revature.quizzard.models.Category;
-import com.revature.quizzard.models.Role;
+import com.revature.quizzard.entities.Category;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 import java.util.stream.Stream;
 
+@Component
 @Converter(autoApply = true)
 public class CategoryConverter implements AttributeConverter<Category, String> {
 
