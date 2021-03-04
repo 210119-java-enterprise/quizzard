@@ -6,23 +6,22 @@ import com.revature.quizzard.models.User;
 import com.revature.quizzard.repos.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Service
 public class UserService {
 
-    private static final UserService userService = new UserService(UserRepository.getInstance());
     private static final Logger LOG = LogManager.getLogger(UserService.class);
     private UserRepository userRepo;
 
+    @Autowired
     private UserService(UserRepository repo) {
         super();
         this.userRepo = repo;
-    }
-
-    public static UserService getInstance() {
-        return userService;
     }
 
     public User getUserById(int id) {
@@ -46,7 +45,7 @@ public class UserService {
 
         Set<User> users;
 
-        users = userRepo.findAll();
+        users = (Set<User>) userRepo.findAll();
 
         if (users.isEmpty()) {
             throw new ResourceNotFoundException();
@@ -64,7 +63,7 @@ public class UserService {
             throw new InvalidRequestException();
         }
 
-        users = userRepo.findUsersByRole(role);
+        users = userRepo.findUsersByRole(role.toString());
 
         if (users.isEmpty()) {
             throw new ResourceNotFoundException();
@@ -138,7 +137,7 @@ public class UserService {
             throw new InvalidRequestException();
         }
 
-        User authUser = userRepo.findUserByCredentials(username, password).orElseThrow(AuthenticationException::new);
+        User authUser = userRepo.findUserByUsernameAndPassword(username, password).orElseThrow(AuthenticationException::new);
 
         if (authUser.accountConfirmed()) {
             return authUser;
@@ -159,7 +158,7 @@ public class UserService {
             throw new ResourcePersistenceException("That username is taken by someone else!");
         }
 
-        userRepo.update(updatedUser);
+        userRepo.save(updatedUser);
 
     }
 
