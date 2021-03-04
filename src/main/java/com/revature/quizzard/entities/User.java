@@ -1,10 +1,9 @@
-package com.revature.quizzard.models;
+package com.revature.quizzard.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.revature.quizzard.util.RoleConverter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity @Table(name = "app_users")
@@ -29,14 +28,15 @@ public class User {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
+    @Convert(converter = RoleConverter.class)
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
     @Column(name = "confirmed", columnDefinition = "boolean default false")
     private boolean accountConfirmed;
 
-    @OneToMany(mappedBy = "creator")
-    private List<Flashcard> userFlashcards;
+//    @OneToMany(mappedBy = "creator")
+//    private List<Flashcard> userFlashcards;
 
     public User() {
         id = 0;
@@ -46,7 +46,7 @@ public class User {
         lastName = "";
         role = Role.BASIC_USER;
         accountConfirmed = false;
-        userFlashcards = new ArrayList<>();
+//        userFlashcards = new ArrayList<>();
     }
 
     public User(String username, String password, String email, String firstName, String lastName) {
@@ -146,13 +146,13 @@ public class User {
         return this.role == Role.ADMIN || this.role == Role.DEV;
     }
 
-    public List<Flashcard> getUserFlashcards() {
-        return userFlashcards;
-    }
-
-    public void setUserFlashcards(List<Flashcard> userFlashcards) {
-        this.userFlashcards = userFlashcards;
-    }
+//    public List<Flashcard> getUserFlashcards() {
+//        return userFlashcards;
+//    }
+//
+//    public void setUserFlashcards(List<Flashcard> userFlashcards) {
+//        this.userFlashcards = userFlashcards;
+//    }
 
     @Override
     public boolean equals(Object o) {
@@ -166,13 +166,12 @@ public class User {
                 Objects.equals(email, user.email) &&
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
-                role == user.role &&
-                Objects.equals(userFlashcards, user.userFlashcards);
+                role == user.role;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, email, firstName, lastName, role, accountConfirmed, userFlashcards);
+        return Objects.hash(id, username, password, email, firstName, lastName, role, accountConfirmed);
     }
 
     @Override

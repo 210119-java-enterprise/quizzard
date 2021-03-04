@@ -1,4 +1,4 @@
-package com.revature.quizzard.models;
+package com.revature.quizzard.entities;
 
 public enum Role {
 
@@ -9,6 +9,10 @@ public enum Role {
 
     Role(String name) {
         this.name = name;
+    }
+
+    public static String valueOf(Role role) {
+        return role.name;
     }
 
     @Override

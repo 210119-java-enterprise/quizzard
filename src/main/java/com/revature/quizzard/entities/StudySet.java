@@ -1,4 +1,4 @@
-package com.revature.quizzard.models;
+package com.revature.quizzard.entities;
 
 import javax.persistence.*;
 import java.util.List;
