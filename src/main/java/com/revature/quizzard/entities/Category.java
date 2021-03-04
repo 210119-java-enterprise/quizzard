@@ -1,5 +1,7 @@
 package com.revature.quizzard.entities;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum Category {
 
     CORE_JAVA("Core Java"), JAVA_THREADS("Java Thread"), JAVA_REFLECTION("Java Reflection"),
@@ -23,6 +25,7 @@ public enum Category {
     }
 
     @Override
+    @JsonValue
     public String toString() {
         return name;
     }

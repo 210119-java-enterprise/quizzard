@@ -1,5 +1,7 @@
 package com.revature.quizzard.entities;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum Role {
 
     ADMIN("Admin"), DEV("Dev"), BASIC_USER("Basic User"),
@@ -11,11 +13,8 @@ public enum Role {
         this.name = name;
     }
 
-    public static String valueOf(Role role) {
-        return role.name;
-    }
-
     @Override
+    @JsonValue
     public String toString() {
         return name;
     }

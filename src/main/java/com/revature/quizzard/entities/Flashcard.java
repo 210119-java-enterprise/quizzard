@@ -16,7 +16,7 @@ public class Flashcard {
     @Column(nullable = false)
     private String answer;
 
-    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Category category;
 
     @ManyToOne @JoinColumn
