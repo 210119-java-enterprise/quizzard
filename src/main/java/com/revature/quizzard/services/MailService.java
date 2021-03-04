@@ -1,6 +1,6 @@
 package com.revature.quizzard.services;
 
-import com.revature.quizzard.models.User;
+import com.revature.quizzard.entities.User;
 import com.revature.quizzard.util.ApplicationProperties;
 import com.revature.quizzard.util.MailerFactory;
 import org.simplejavamail.api.email.Email;

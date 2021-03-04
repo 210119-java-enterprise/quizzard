@@ -1,8 +1,8 @@
 package com.revature.quizzard.services;
 
 import com.revature.quizzard.exceptions.*;
-import com.revature.quizzard.models.Role;
-import com.revature.quizzard.models.User;
+import com.revature.quizzard.entities.Role;
+import com.revature.quizzard.entities.User;
 import com.revature.quizzard.repos.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,11 +41,11 @@ public class UserService {
 
     }
 
-    public Set<User> getAllUsers() {
+    public List<User> getAllUsers() {
 
-        Set<User> users;
+        List<User> users;
 
-        users = (Set<User>) userRepo.findAll();
+        users = (List<User>) userRepo.findAll();
 
         if (users.isEmpty()) {
             throw new ResourceNotFoundException();
