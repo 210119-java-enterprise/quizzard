@@ -3,7 +3,7 @@ package com.revature.quizzard.models;
 import javax.persistence.*;
 import java.util.Objects;
 
-@Entity
+@Entity @Table(name = "flashcards")
 public class Flashcard {
 
     @Id @Column
@@ -34,17 +34,19 @@ public class Flashcard {
     }
 
     public Flashcard(String question, String answer, Category category) {
-        this.id = 0;
-        this.question = (question != null) ? question : "";
-        this.answer = (answer != null) ? answer : "";
+        this(question, answer);
         this.category = (category != null) ? category : Category.OTHER;
     }
 
     public Flashcard(int id, String question, String answer, Category category) {
+        this(question, answer);
         this.id = id;
-        this.question = (question != null) ? question : "";
-        this.answer = (answer != null) ? answer : "";
         this.category = (category != null) ? category : Category.OTHER;
+    }
+
+    public Flashcard(int id, String question, String answer, Category category, User creator) {
+        this(id, question, answer, category);
+        this.creator = creator;
     }
 
     public int getId() {
@@ -82,20 +84,29 @@ public class Flashcard {
         this.category = category;
     }
 
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Flashcard flashcard = (Flashcard) o;
         return id == flashcard.id &&
-                question.equals(flashcard.question) &&
-                answer.equals(flashcard.answer) &&
-                category == flashcard.category;
+                Objects.equals(question, flashcard.question) &&
+                Objects.equals(answer, flashcard.answer) &&
+                category == flashcard.category &&
+                Objects.equals(creator, flashcard.creator);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, question, answer, category);
+        return Objects.hash(id, question, answer, category, creator);
     }
 
     @Override
@@ -105,6 +116,7 @@ public class Flashcard {
                 ", question='" + question + '\'' +
                 ", answer='" + answer + '\'' +
                 ", category=" + category +
+                ", creator=" + creator +
                 '}';
     }
 

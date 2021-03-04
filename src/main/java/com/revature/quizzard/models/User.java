@@ -3,6 +3,7 @@ package com.revature.quizzard.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,6 +46,7 @@ public class User {
         lastName = "";
         role = Role.BASIC_USER;
         accountConfirmed = false;
+        userFlashcards = new ArrayList<>();
     }
 
     public User(String username, String password, String email, String firstName, String lastName) {
@@ -59,24 +61,14 @@ public class User {
     }
 
     public User(String username, String password, String email, String firstName, String lastName, Role role) {
-        id = 0;
-        this.username = (username != null) ? username : "";
-        this.password = (password != null) ? password : "";
-        this.email = (email != null) ? email : "";
-        this.firstName = (firstName != null) ? firstName : "";
-        this.lastName = (lastName != null) ? lastName : "";
+        this(username, password, email, firstName, lastName);
         this.role = role;
         accountConfirmed = false;
     }
 
     public User(Integer id, String username, String password, String email, String firstName, String lastName, Role role, boolean conf) {
+        this(username, password, email, firstName, lastName, role);
         this.id = id;
-        this.username = (username != null) ? username : "";
-        this.password = (password != null) ? password : "";
-        this.email = (email != null) ? email : "";
-        this.firstName = (firstName != null) ? firstName : "";
-        this.lastName = (lastName != null) ? lastName : "";
-        this.role = (role != null) ? role : Role.BASIC_USER;
         accountConfirmed = conf;
     }
 
@@ -154,7 +146,13 @@ public class User {
         return this.role == Role.ADMIN || this.role == Role.DEV;
     }
 
+    public List<Flashcard> getUserFlashcards() {
+        return userFlashcards;
+    }
 
+    public void setUserFlashcards(List<Flashcard> userFlashcards) {
+        this.userFlashcards = userFlashcards;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -162,16 +160,19 @@ public class User {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return id == user.id &&
-                username.equals(user.username) &&
-                password.equals(user.password) &&
-                firstName.equals(user.firstName) &&
-                lastName.equals(user.lastName) &&
-                role == user.role;
+                accountConfirmed == user.accountConfirmed &&
+                Objects.equals(username, user.username) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(lastName, user.lastName) &&
+                role == user.role &&
+                Objects.equals(userFlashcards, user.userFlashcards);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, firstName, lastName, role);
+        return Objects.hash(id, username, password, email, firstName, lastName, role, accountConfirmed, userFlashcards);
     }
 
     @Override
