@@ -1,4 +1,4 @@
-package com.revature.quizzard.util;
+package com.revature.quizzard.util.aspects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
