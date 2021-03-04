@@ -30,11 +30,11 @@ INSERT INTO flashcards (question, answer, category, creator) VALUES ('Dummy Spri
 INSERT INTO flashcards (question, answer, category, creator) VALUES ('Dummy Microservice Architecture Question 1', 'Dummy Answer', 'Microservice Architecture', 4);
 INSERT INTO flashcards (question, answer, category, creator) VALUES ('Dummy Microservice Architecture Question 2', 'Dummy Answer', 'Microservice Architecture', 4);
 
-INSERT INTO study_sets (name, owner_id) VALUES ('Core Java Study Set', 4);
-INSERT INTO study_sets (name, owner_id) VALUES ('Spring Study Set', 4);
-INSERT INTO study_sets (name, owner_id) VALUES ('Core JavaScript Study Set', 5);
-INSERT INTO study_sets (name, owner_id) VALUES ('React Study Set', 5);
-INSERT INTO study_sets (name, owner_id) VALUES ('DevOps Study Set', 5);
+INSERT INTO study_sets (name, owner) VALUES ('Core Java Study Set', 4);
+INSERT INTO study_sets (name, owner) VALUES ('Spring Study Set', 4);
+INSERT INTO study_sets (name, owner) VALUES ('Core JavaScript Study Set', 5);
+INSERT INTO study_sets (name, owner) VALUES ('React Study Set', 5);
+INSERT INTO study_sets (name, owner) VALUES ('DevOps Study Set', 5);
 
 INSERT INTO study_set_cards VALUES (1, 1);
 INSERT INTO study_set_cards VALUES (1, 2);
