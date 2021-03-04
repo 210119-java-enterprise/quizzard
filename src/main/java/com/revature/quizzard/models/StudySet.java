@@ -19,6 +19,7 @@ public class StudySet {
 
     @ManyToMany
     @JoinTable(
+        name = "study_set_cards",
         joinColumns = @JoinColumn(name = "study_set_id"),
         inverseJoinColumns = @JoinColumn(name = "flashcard_id")
     )
