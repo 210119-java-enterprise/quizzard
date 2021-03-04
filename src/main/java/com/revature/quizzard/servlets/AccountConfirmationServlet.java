@@ -18,45 +18,46 @@ import java.io.PrintWriter;
 
 import static com.revature.quizzard.util.ApplicationProperties.APP_URL;
 
-@WebServlet("/confirmation")
+@Deprecated
+//@WebServlet("/confirmation")
 public class AccountConfirmationServlet extends HttpServlet {
 
-    private static final Logger LOG = LogManager.getLogger(UserServlet.class);
-
-    private final UserService USER_SERVICE = UserService.getInstance();
-    private final ErrorResponseFactory errRespFactory = ErrorResponseFactory.getInstance();
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        PrintWriter writer = resp.getWriter();
-        String userIdParam = req.getParameter("userId");
-        resp.setContentType("text/html");
-
-        try {
-
-            if (userIdParam != null) {
-                int userId = Integer.parseInt(userIdParam);
-                LOG.info("Attempting to confirm account with id, {}", userId);
-                USER_SERVICE.confirmAccount(userId);
-                LOG.info("Account belonging to user with id, {}, successfully confirmed.", userId);
-                resp.sendRedirect(APP_URL);
-            } else {
-                throw new InvalidRequestException();
-            }
-
-        } catch (NumberFormatException | InvalidRequestException e) {
-            LOG.warn(e.getMessage());
-            resp.setStatus(400);
-            writer.write(errRespFactory.generateErrorResponse(QuizzardHttpStatus.BAD_REQUEST).toJSON());
-        } catch (ResourceNotFoundException e) {
-            LOG.warn(e.getMessage());
-            resp.setStatus(404);
-            writer.write(errRespFactory.generateErrorResponse(QuizzardHttpStatus.NOT_FOUND).toJSON());
-        } catch (Exception e) {
-            LOG.error(e.getMessage());
-            resp.setStatus(500);
-            writer.write(errRespFactory.generateErrorResponse(QuizzardHttpStatus.INTERNAL_SERVER_ERROR).toJSON());
-        }
-    }
+//    private static final Logger LOG = LogManager.getLogger(UserServlet.class);
+//
+//    private final UserService USER_SERVICE = UserService.getInstance();
+//    private final ErrorResponseFactory errRespFactory = ErrorResponseFactory.getInstance();
+//
+//    @Override
+//    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//
+//        PrintWriter writer = resp.getWriter();
+//        String userIdParam = req.getParameter("userId");
+//        resp.setContentType("text/html");
+//
+//        try {
+//
+//            if (userIdParam != null) {
+//                int userId = Integer.parseInt(userIdParam);
+//                LOG.info("Attempting to confirm account with id, {}", userId);
+//                USER_SERVICE.confirmAccount(userId);
+//                LOG.info("Account belonging to user with id, {}, successfully confirmed.", userId);
+//                resp.sendRedirect(APP_URL);
+//            } else {
+//                throw new InvalidRequestException();
+//            }
+//
+//        } catch (NumberFormatException | InvalidRequestException e) {
+//            LOG.warn(e.getMessage());
+//            resp.setStatus(400);
+//            writer.write(errRespFactory.generateErrorResponse(QuizzardHttpStatus.BAD_REQUEST).toJSON());
+//        } catch (ResourceNotFoundException e) {
+//            LOG.warn(e.getMessage());
+//            resp.setStatus(404);
+//            writer.write(errRespFactory.generateErrorResponse(QuizzardHttpStatus.NOT_FOUND).toJSON());
+//        } catch (Exception e) {
+//            LOG.error(e.getMessage());
+//            resp.setStatus(500);
+//            writer.write(errRespFactory.generateErrorResponse(QuizzardHttpStatus.INTERNAL_SERVER_ERROR).toJSON());
+//        }
+//    }
 }
