@@ -1,8 +1,11 @@
 package com.revature.quizzard.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.revature.quizzard.util.RegexUtil;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -17,9 +20,11 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
+    @Pattern(regexp = RegexUtil.PASSWORD_REGEX)
     @Column(nullable = false)
     private String password;
 
+    @Email
     @Column(nullable = false, unique = true)
     private String email;
 

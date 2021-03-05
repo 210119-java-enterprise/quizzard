@@ -1,5 +1,6 @@
 package com.revature.quizzard.services;
 
+import com.revature.quizzard.dtos.Principal;
 import com.revature.quizzard.exceptions.*;
 import com.revature.quizzard.entities.Role;
 import com.revature.quizzard.entities.User;
@@ -8,11 +9,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class UserService {
 
     private static final Logger LOG = LogManager.getLogger(UserService.class);
@@ -24,6 +28,7 @@ public class UserService {
         this.userRepo = repo;
     }
 
+    @Transactional(readOnly = true)
     public User getUserById(int id) {
         if (id <= 0 ) {
             throw new InvalidRequestException();
@@ -31,11 +36,12 @@ public class UserService {
         return userRepo.findById(id).orElseThrow(ResourceNotFoundException::new);
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void register(User newUser) {
 
         if (!isUserValid(newUser)) throw new InvalidRequestException();
 
-        if (userRepo.findUserByUsername(newUser.getUsername()).isPresent()) {
+        if (getUserByUsername(newUser.getUsername()) != null) {
             throw new ResourcePersistenceException("Username is already in use!");
         }
 
@@ -134,16 +140,12 @@ public class UserService {
 
     }
 
-    public User authenticate(String username, String password) {
-
-        if (username == null || username.trim().equals("") || password == null || password.trim().equals("")) {
-            throw new InvalidRequestException();
-        }
+    public Principal authenticate(String username, String password) {
 
         User authUser = userRepo.findUserByUsernameAndPassword(username, password).orElseThrow(AuthenticationException::new);
 
         if (authUser.accountConfirmed()) {
-            return authUser;
+            return new Principal(authUser);
         } else {
             throw new AuthenticationException("Account not confirmed.");
         }

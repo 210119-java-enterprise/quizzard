@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -46,13 +47,14 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void createNewUser(@RequestBody User newUser) {
         userService.register(newUser);
     }
 
-    @PostMapping(path = "")
-    public Principal authenticateUser(Credentials credentials) {
+    @PostMapping(path = "/authentication", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Principal authenticateUser(@RequestBody @Valid Credentials credentials) {
+        System.out.println(credentials);
         return userService.authenticate(credentials.getUsername(), credentials.getPassword());
     }
 
