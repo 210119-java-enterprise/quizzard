@@ -16,6 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -53,9 +56,10 @@ public class UserController {
     }
 
     @PostMapping(path = "/authentication", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Principal authenticateUser(@RequestBody @Valid Credentials credentials) {
-        System.out.println(credentials);
-        return userService.authenticate(credentials.getUsername(), credentials.getPassword());
+    public Principal authenticateUser(@RequestBody @Valid Credentials credentials, HttpServletResponse response) {
+        Principal principal = userService.authenticate(credentials.getUsername(), credentials.getPassword());
+        response.addCookie(new Cookie("quizzard-token", principal.getToken()));
+        return principal;
     }
 
     // Included for posterity

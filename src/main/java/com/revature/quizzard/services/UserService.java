@@ -5,6 +5,7 @@ import com.revature.quizzard.exceptions.*;
 import com.revature.quizzard.entities.Role;
 import com.revature.quizzard.entities.User;
 import com.revature.quizzard.repos.UserRepository;
+import com.revature.quizzard.web.intercom.AuthServiceClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +22,13 @@ public class UserService {
 
     private static final Logger LOG = LogManager.getLogger(UserService.class);
     private UserRepository userRepo;
+    private AuthServiceClient authClient;
 
     @Autowired
-    public UserService(UserRepository repo) {
+    public UserService(UserRepository repo, AuthServiceClient authClient) {
         super();
         this.userRepo = repo;
+        this.authClient = authClient;
     }
 
     @Transactional(readOnly = true)
@@ -145,7 +148,10 @@ public class UserService {
         User authUser = userRepo.findUserByUsernameAndPassword(username, password).orElseThrow(AuthenticationException::new);
 
         if (authUser.accountConfirmed()) {
-            return new Principal(authUser);
+            Principal principal = new Principal(authUser);
+            String token = authClient.generateTokenFromPrincipal(principal);
+            principal.setToken(token);
+            return principal;
         } else {
             throw new AuthenticationException("Account not confirmed.");
         }

@@ -1,5 +1,6 @@
 package com.revature.quizzard.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.revature.quizzard.entities.User;
 
 public class Principal {
@@ -7,6 +8,9 @@ public class Principal {
     private int id;
     private String username;
     private String role;
+
+    @JsonIgnore
+    private String token;
 
     public Principal() {
         super();
@@ -42,4 +46,11 @@ public class Principal {
         this.role = role;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }
