@@ -1,6 +1,8 @@
 package com.revature.quizzard.web.controllers;
 
+import com.revature.quizzard.dtos.Credentials;
 import com.revature.quizzard.dtos.ErrorResponse;
+import com.revature.quizzard.dtos.Principal;
 import com.revature.quizzard.dtos.QuizzardHttpStatus;
 import com.revature.quizzard.exceptions.InvalidRequestException;
 import com.revature.quizzard.exceptions.ResourceNotFoundException;
@@ -8,6 +10,7 @@ import com.revature.quizzard.exceptions.ResourcePersistenceException;
 import com.revature.quizzard.entities.User;
 import com.revature.quizzard.services.UserService;
 import com.revature.quizzard.util.ErrorResponseFactory;
+import com.revature.quizzard.web.security.Secured;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,6 +29,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @Secured(allowedRoles = {"Admin", "Dev"})
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<User> getAllUsers() {
         return userService.getAllUsers();
@@ -36,28 +40,20 @@ public class UserController {
         return userService.getUserById(id);
     }
 
+    @GetMapping(path = "/confirmation")
+    public void confirmUserAccount(@RequestParam int userId) {
+        userService.confirmAccount(userId);
+    }
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public void createNewUser(@RequestBody User newUser) {
         userService.register(newUser);
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleInvalidRequestException(InvalidRequestException e) {
-        return ErrorResponseFactory.getInstance().generateErrorResponse(QuizzardHttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleResourceNotFoundException(ResourceNotFoundException e) {
-        return ErrorResponseFactory.getInstance().generateErrorResponse(QuizzardHttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleResourcePersistenceException(ResourcePersistenceException e) {
-        return ErrorResponseFactory.getInstance().generateErrorResponse(QuizzardHttpStatus.CONFLICT);
+    @PostMapping(path = "")
+    public Principal authenticateUser(Credentials credentials) {
+        return userService.authenticate(credentials.getUsername(), credentials.getPassword());
     }
 
     // Included for posterity
