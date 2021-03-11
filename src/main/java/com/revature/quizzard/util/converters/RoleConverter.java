@@ -1,4 +1,4 @@
-package com.revature.quizzard.util;
+package com.revature.quizzard.util.converters;
 
 import com.revature.quizzard.entities.Role;
 import org.springframework.stereotype.Component;
