@@ -58,7 +58,7 @@ INSERT INTO questions (question_text, correct_answer, answer_a, answer_b, answer
 VALUES ('Which of the following is NOT a falsy value?', 'a', '{}', '0', '""', 'NaN');
 
 INSERT INTO questions (question_text, correct_answer, answer_a, answer_b, answer_c, answer_d)
-VALUES ('7 + 7 + "7" = ?', 'd', '147', '21', '"777"', '"147');
+VALUES ('7 + 7 + "7" = ?', 'd', '147', '21', '"777"', '"147"');
 
 INSERT INTO questions (question_text, correct_answer, answer_a, answer_b, answer_c, answer_d)
 VALUES ('NaN == NaN', 'b', 'true', 'false', 'undefined', 'SyntaxError');
