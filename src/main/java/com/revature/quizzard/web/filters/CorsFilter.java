@@ -10,10 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-//@Component
-//@WebFilter("/*")
+@Component
+@WebFilter("/*")
 public class CorsFilter extends OncePerRequestFilter {
-//    @Override
+    @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws ServletException, IOException {
         resp.setHeader("Access-Control-Allow-Origin", "*");
         resp.setHeader("Access-Control-Allow-Headers", "Content-Type");

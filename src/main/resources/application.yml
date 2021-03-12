@@ -31,10 +31,6 @@ management:
     web:
       exposure:
         include: "*" # DO NOT EXPOSE ALL ACTUATOR ENDPOINTS IN PRODUCTION
-      cors:
-        allowed-origins: "*"
-        allowed-methods: GET
-        allowed-headers: Content-Type
 
 # .properties file version of the above .yml configuration
 #-----------------------------------------------------------
