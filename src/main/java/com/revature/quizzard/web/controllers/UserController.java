@@ -1,23 +1,16 @@
 package com.revature.quizzard.web.controllers;
 
 import com.revature.quizzard.dtos.Credentials;
-import com.revature.quizzard.dtos.ErrorResponse;
 import com.revature.quizzard.dtos.Principal;
-import com.revature.quizzard.dtos.QuizzardHttpStatus;
-import com.revature.quizzard.exceptions.InvalidRequestException;
-import com.revature.quizzard.exceptions.ResourceNotFoundException;
-import com.revature.quizzard.exceptions.ResourcePersistenceException;
 import com.revature.quizzard.entities.User;
 import com.revature.quizzard.services.UserService;
-import com.revature.quizzard.util.ErrorResponseFactory;
-import com.revature.quizzard.web.security.Secured;
+import com.revature.quizzard.util.security.Secured;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;

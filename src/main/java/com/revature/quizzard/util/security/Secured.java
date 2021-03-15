@@ -1,4 +1,4 @@
-package com.revature.quizzard.web.security;
+package com.revature.quizzard.util.security;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,12 +1,9 @@
 package com.revature.quizzard.util.aspects;
 
-import com.revature.quizzard.dtos.Principal;
 import com.revature.quizzard.exceptions.AuthenticationException;
 import com.revature.quizzard.exceptions.AuthorizationException;
 import com.revature.quizzard.web.intercom.AuthServiceClient;
-import com.revature.quizzard.web.security.Secured;
-import net.bytebuddy.implementation.bytecode.Throw;
-import org.aspectj.lang.JoinPoint;
+import com.revature.quizzard.util.security.Secured;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -34,7 +31,7 @@ public class SecurityAspect {
         this.authClient = authClient;
     }
 
-    @Around("@annotation(com.revature.quizzard.web.security.Secured)")
+    @Around("@annotation(com.revature.quizzard.util.security.Secured)")
     public Object secureEndpoint(ProceedingJoinPoint pjp) throws Throwable {
         Method method = ((MethodSignature) pjp.getSignature()).getMethod();
         Secured securedAnno = method.getAnnotation(Secured.class);
