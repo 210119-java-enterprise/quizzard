@@ -38,23 +38,9 @@ public class SecurityAspect {
 
         List<String> allowedRoles = Arrays.asList(securedAnno.allowedRoles());
 
-        Cookie[] reqCookies = request.getCookies();
-
-        if (reqCookies == null) {
-            throw new AuthenticationException("An unauthenticated request was made to a protected endpoint!");
-        }
-
-        String token = Stream.of(reqCookies)
-                            .filter(c -> c.getName().equals("quizzard-token"))
-                            .findFirst()
-                            .orElseThrow(AuthenticationException::new)
-                            .getValue();
-
+        String token = request.getHeader("quizzard-token");
         System.out.println(token);
-
         String authority = authClient.getTokenAuthorities(token);
-
-        System.out.println(authority);
 
         if (!allowedRoles.contains(authority)) {
             throw new AuthorizationException();

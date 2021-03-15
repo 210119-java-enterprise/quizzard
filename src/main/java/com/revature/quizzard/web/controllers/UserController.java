@@ -52,7 +52,7 @@ public class UserController {
     @PostMapping(path = "/authentication", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Principal authenticateUser(@RequestBody @Valid Credentials credentials, HttpServletResponse response) {
         Principal principal = userService.authenticate(credentials.getUsername(), credentials.getPassword());
-        response.addCookie(new Cookie("quizzard-token", principal.getToken()));
+        response.setHeader("quizzard-token", principal.getToken());
         return principal;
     }
 
