@@ -6,4 +6,7 @@ public class QuizzardException extends RuntimeException {
         super("An unspecified exception was thrown, see logs for more information", e);
     }
 
+    public QuizzardException(String message) {
+        super(message);
+    }
 }
