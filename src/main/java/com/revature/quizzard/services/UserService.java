@@ -1,7 +1,7 @@
 package com.revature.quizzard.services;
 
 import com.revature.quizzard.dtos.Principal;
-import com.revature.quizzard.exceptions.*;
+import com.revature.quizzard.util.exceptions.*;
 import com.revature.quizzard.entities.Role;
 import com.revature.quizzard.entities.User;
 import com.revature.quizzard.repos.UserRepository;

@@ -1,6 +1,6 @@
 package com.revature.quizzard.web.controllers;
 
-import com.revature.quizzard.exceptions.ResourceNotFoundException;
+import com.revature.quizzard.util.exceptions.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

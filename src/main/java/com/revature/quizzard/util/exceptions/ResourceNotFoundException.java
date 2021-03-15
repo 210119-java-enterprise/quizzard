@@ -1,4 +1,4 @@
-package com.revature.quizzard.exceptions;
+package com.revature.quizzard.util.exceptions;
 
 public class ResourceNotFoundException extends RuntimeException {
 

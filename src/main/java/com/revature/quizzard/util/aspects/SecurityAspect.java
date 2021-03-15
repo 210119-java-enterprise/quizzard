@@ -1,7 +1,7 @@
 package com.revature.quizzard.util.aspects;
 
-import com.revature.quizzard.exceptions.AuthenticationException;
-import com.revature.quizzard.exceptions.AuthorizationException;
+import com.revature.quizzard.util.exceptions.AuthenticationException;
+import com.revature.quizzard.util.exceptions.AuthorizationException;
 import com.revature.quizzard.web.intercom.AuthServiceClient;
 import com.revature.quizzard.util.security.Secured;
 import org.aspectj.lang.ProceedingJoinPoint;

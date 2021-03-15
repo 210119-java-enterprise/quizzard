@@ -2,7 +2,7 @@ package com.revature.quizzard.util.aspects;
 
 import com.revature.quizzard.dtos.ErrorResponse;
 import com.revature.quizzard.dtos.QuizzardHttpStatus;
-import com.revature.quizzard.exceptions.*;
+import com.revature.quizzard.util.exceptions.*;
 import com.revature.quizzard.util.ErrorResponseFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
