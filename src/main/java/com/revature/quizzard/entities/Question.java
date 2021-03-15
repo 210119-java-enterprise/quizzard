@@ -1,7 +1,11 @@
 package com.revature.quizzard.entities;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
+@Data @NoArgsConstructor
 @Entity @Table(name = "questions")
 public class Question {
 
@@ -18,43 +22,8 @@ public class Question {
     @Embedded
     private Answers questionAnswers;
 
-    public Question() {
-        super();
-    }
-
-    public int getQuestionId() {
-        return questionId;
-    }
-
-    public void setQuestionId(int questionId) {
-        this.questionId = questionId;
-    }
-
-    public String getQuestionText() {
-        return questionText;
-    }
-
-    public void setQuestionText(String questionText) {
-        this.questionText = questionText;
-    }
-
-    public String getCorrectAnswer() {
-        return correctAnswer;
-    }
-
-    public void setCorrectAnswer(String correctAnswer) {
-        this.correctAnswer = correctAnswer;
-    }
-
-    public Answers getQuestionAnswers() {
-        return questionAnswers;
-    }
-
-    public void setQuestionAnswers(Answers questionAnswers) {
-        this.questionAnswers = questionAnswers;
-    }
-
     @Embeddable
+    @Data @NoArgsConstructor
     public static class Answers {
 
         @Column(name = "answer_a")
@@ -69,37 +38,6 @@ public class Question {
         @Column(name = "answer_d")
         private String answerD;
 
-        public String getAnswerA() {
-            return answerA;
-        }
-
-        public void setAnswerA(String answerA) {
-            this.answerA = answerA;
-        }
-
-        public String getAnswerB() {
-            return answerB;
-        }
-
-        public void setAnswerB(String answerB) {
-            this.answerB = answerB;
-        }
-
-        public String getAnswerC() {
-            return answerC;
-        }
-
-        public void setAnswerC(String answerC) {
-            this.answerC = answerC;
-        }
-
-        public String getAnswerD() {
-            return answerD;
-        }
-
-        public void setAnswerD(String answerD) {
-            this.answerD = answerD;
-        }
     }
 
 }

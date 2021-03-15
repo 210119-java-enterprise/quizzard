@@ -1,9 +1,14 @@
 package com.revature.quizzard.entities;
 
-import javax.persistence.*;
-import java.util.List;
-import java.util.Objects;
+import lombok.Data;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
 @Entity @Table(name = "study_sets")
 public class StudySet {
 
@@ -11,91 +16,36 @@ public class StudySet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotEmpty
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne @JoinColumn
+    @NotNull
+    @ManyToOne
+    @JoinColumn(nullable = false)
     private User owner;
 
     @ManyToMany
     @JoinTable(
         name = "study_set_cards",
-        joinColumns = @JoinColumn(name = "study_set_id"),
-        inverseJoinColumns = @JoinColumn(name = "flashcard_id")
+        joinColumns = @JoinColumn(name = "study_set_id", nullable = false),
+        inverseJoinColumns = @JoinColumn(name = "flashcard_id", nullable = false)
     )
     private List<Flashcard> studySetCards;
 
     public StudySet() {
-        super();
+        studySetCards = new ArrayList<>();
     }
 
-    public StudySet(String name, User owner) {
+    public StudySet(@NotEmpty String name, @NotNull User owner) {
+        this();
         this.name = name;
         this.owner = owner;
     }
 
-    public StudySet(int id, String name, User owner, List<Flashcard> studySetCards) {
-        this(name, owner);
-        this.id = id;
-        this.studySetCards = studySetCards;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
-
-    public List<Flashcard> getStudySetCards() {
-        return studySetCards;
-    }
-
-    public void setStudySetCards(List<Flashcard> studySetCards) {
-        this.studySetCards = studySetCards;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        StudySet studySet = (StudySet) o;
-        return id == studySet.id &&
-                Objects.equals(name, studySet.name) &&
-                Objects.equals(owner, studySet.owner) &&
-                Objects.equals(studySetCards, studySet.studySetCards);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, owner, studySetCards);
-    }
-
-    @Override
-    public String toString() {
-        return "StudySet{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", owner=" + owner +
-                ", studySetCards=" + studySetCards +
-                '}';
+    public StudySet addFlashcardToStudySet(Flashcard flashcard) {
+        studySetCards.add(flashcard);
+        return this;
     }
 
 }
