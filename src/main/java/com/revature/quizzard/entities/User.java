@@ -48,8 +48,7 @@ public class User {
     @Column(name = "confirmed", columnDefinition = "boolean default false")
     private boolean accountConfirmed;
 
-    @CreationTimestamp
-    @Column(name = "registration_datetime", updatable = false, nullable = false)
+    @Column(name = "registration_datetime", updatable = false, nullable = false, columnDefinition = "timestamp default current_timestamp")
     private LocalDateTime registrationDateTime;
 
     @JsonIgnore
