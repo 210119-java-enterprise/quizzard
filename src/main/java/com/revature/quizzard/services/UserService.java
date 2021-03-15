@@ -13,6 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -20,29 +24,22 @@ import java.util.stream.Collectors;
 @Transactional
 public class UserService {
 
-    private static final Logger LOG = LogManager.getLogger(UserService.class);
     private UserRepository userRepo;
     private AuthServiceClient authClient;
 
     @Autowired
     public UserService(UserRepository repo, AuthServiceClient authClient) {
-        super();
         this.userRepo = repo;
         this.authClient = authClient;
     }
 
     @Transactional(readOnly = true)
-    public User getUserById(int id) {
-        if (id <= 0 ) {
-            throw new InvalidRequestException();
-        }
+    public User getUserById(@Min(0) int id) {
         return userRepo.findById(id).orElseThrow(ResourceNotFoundException::new);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void register(User newUser) {
-
-        if (!isUserValid(newUser)) throw new InvalidRequestException();
+    public void register(@Valid User newUser) {
 
         if (getUserByUsername(newUser.getUsername()) != null) {
             throw new ResourcePersistenceException("Username is already in use!");
@@ -53,6 +50,7 @@ public class UserService {
 
     }
 
+    @Transactional(readOnly = true)
     public List<User> getAllUsers() {
 
         List<User> users;
@@ -67,7 +65,8 @@ public class UserService {
 
     }
 
-    public Set<User> getUsersByRole(Role role) {
+    @Transactional(readOnly = true)
+    public Set<User> getUsersByRole(@NotNull Role role) {
 
         Set<User> users;
 
@@ -85,54 +84,35 @@ public class UserService {
 
     }
 
-    public User getUserByUsername(String username) {
-
-        if (username == null || username.trim().equals("")) {
-            throw new InvalidRequestException();
-        }
-
+    @Transactional(readOnly = true)
+    public User getUserByUsername(@NotEmpty String username) {
         return userRepo.findUserByUsername(username).orElseThrow(ResourceNotFoundException::new);
-
     }
 
-    public void confirmAccount(int userId) {
-
-        if (userId <= 0) {
-            throw new InvalidRequestException();
-        }
-
+    public void confirmAccount(@Min(1) int userId) {
         userRepo.confirmAccount(userId);
-
     }
 
-    public SortedSet<User> sortUsers(String sortCriterion, Set<User> usersForSorting) {
+    public SortedSet<User> sortUsers(@NotEmpty String sortCriterion, @NotEmpty Set<User> usersForSorting) {
 
         SortedSet<User> users = new TreeSet<>(usersForSorting);
 
         switch (sortCriterion.toLowerCase()) {
             case "username":
                 users = users.stream()
-                        .collect(Collectors.toCollection(() -> {
-                            return new TreeSet<>(Comparator.comparing(User::getUsername, String::compareTo));
-                        }));
+                        .collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(User::getUsername, String::compareTo))));
                 break;
             case "first":
                 users = users.stream()
-                        .collect(Collectors.toCollection(() -> {
-                            return new TreeSet<>(Comparator.comparing(User::getFirstName, String::compareTo));
-                        }));
+                        .collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(User::getFirstName, String::compareTo))));
                 break;
             case "last":
                 users = users.stream()
-                        .collect(Collectors.toCollection(() -> {
-                            return new TreeSet<>(Comparator.comparing(User::getLastName, String::compareTo));
-                        }));
+                        .collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(User::getLastName, String::compareTo))));
                 break;
             case "role":
                 users = users.stream()
-                        .collect(Collectors.toCollection(() -> {
-                            return new TreeSet<>(Comparator.comparing(User::getRole, Enum::compareTo));
-                        }));
+                        .collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(User::getRole, Enum::compareTo))));
                 break;
             default:
                 throw new InvalidRequestException();
@@ -143,11 +123,11 @@ public class UserService {
 
     }
 
-    public Principal authenticate(String username, String password) {
+    public Principal authenticate(@NotEmpty String username, @NotEmpty String password) {
 
         User authUser = userRepo.findUserByUsernameAndPassword(username, password).orElseThrow(AuthenticationException::new);
 
-        if (authUser.accountConfirmed()) {
+        if (authUser.isAccountConfirmed()) {
             Principal principal = new Principal(authUser);
             String token = authClient.generateTokenFromPrincipal(principal);
             principal.setToken(token);
@@ -158,11 +138,7 @@ public class UserService {
 
     }
 
-    public void updateProfile(User updatedUser) {
-
-        if (!isUserValid(updatedUser)) {
-            throw new InvalidRequestException();
-        }
+    public void updateProfile(@Valid User updatedUser) {
 
         Optional<User> persistedUser = userRepo.findUserByUsername(updatedUser.getUsername());
         if (persistedUser.isPresent() && persistedUser.get().getId() != updatedUser.getId()) {
@@ -171,16 +147,6 @@ public class UserService {
 
         userRepo.save(updatedUser);
 
-    }
-
-    public Boolean isUserValid(User user) {
-        System.out.println(user);
-        if (user == null) return false;
-        if (user.getFirstName() == null || user.getFirstName().trim().equals("")) return false;
-        if (user.getLastName() == null || user.getLastName().trim().equals("")) return false;
-        if (user.getUsername() == null || user.getUsername().trim().equals("")) return false;
-        if (user.getPassword() == null || user.getPassword().trim().equals("")) return false;
-        return true;
     }
 
 }
