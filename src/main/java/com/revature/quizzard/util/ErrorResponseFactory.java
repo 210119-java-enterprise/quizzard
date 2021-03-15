@@ -2,18 +2,10 @@ package com.revature.quizzard.util;
 
 import com.revature.quizzard.dtos.ErrorResponse;
 import com.revature.quizzard.dtos.QuizzardHttpStatus;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ErrorResponseFactory {
-
-    private static ErrorResponseFactory errRespFactory = new ErrorResponseFactory();
-
-    private ErrorResponseFactory() {
-        super();
-    }
-
-    public static ErrorResponseFactory getInstance() {
-        return errRespFactory;
-    }
 
     public ErrorResponse generateErrorResponse(int status, String message) {
         return new ErrorResponse(status, message, System.currentTimeMillis());
