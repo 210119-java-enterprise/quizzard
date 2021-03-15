@@ -1,4 +1,4 @@
 package com.revature.quizzard.web.controllers;
 
-public class FlashCardController {
+public class FlashcardController {
 }
