@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
@@ -33,18 +34,18 @@ public class UserController {
     }
 
     @GetMapping(path = "/id/{id}")
-    public User getUserById(@PathVariable int id) {
+    public User getUserById(@PathVariable @Min(0) int id) {
         return userService.getUserById(id);
     }
 
     @GetMapping(path = "/confirmation")
-    public void confirmUserAccount(@RequestParam int userId) {
+    public void confirmUserAccount(@RequestParam @Min(0) int userId) {
         userService.confirmAccount(userId);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void createNewUser(@RequestBody User newUser) {
+    public void createNewUser(@RequestBody @Valid User newUser) {
         userService.register(newUser);
     }
 
@@ -55,28 +56,4 @@ public class UserController {
         return principal;
     }
 
-    // Included for posterity
-//    @GetMapping(path = "/id/{id}/something/{stf}")
-//    public User getUserById(@PathVariable int id, @PathVariable("stf") String stuff) {
-//        System.out.println("id provided: " + id);
-//        System.out.println("stuff provided: " + stuff);
-//        return new User("wsingleton", "password", "wsingleton@revature.com", "Wezley", "Singleton", Role.ADMIN);
-//    }
-
-//    @GetMapping(path = "/id", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public User getUserById(@RequestParam int id, @RequestParam("stf") String stuff) {
-//        if (id <= 0) {
-//            throw new ResourceNotFoundException();
-//        }
-//        System.out.println("id provided: " + id);
-//        System.out.println("stuff provided: " + stuff);
-//        return new User("wsingleton", "password", "wsingleton@revature.com", "Wezley", "Singleton", Role.ADMIN);
-//    }
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-//    public User createNewUser(@RequestBody User newUser, @RequestHeader String someHeader) {
-//        System.out.println(newUser);
-//        System.out.println(someHeader);
-//        return newUser;
-//    }
 }

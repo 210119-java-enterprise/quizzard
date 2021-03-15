@@ -21,6 +21,7 @@ public class CategoryConverter implements AttributeConverter<Category, String> {
 
     @Override
     public Category convertToEntityAttribute(String categoryName) {
+        System.out.println(categoryName);
         return Stream.of(Category.values())
                 .filter(c -> c.toString().equals(categoryName))
                 .findFirst()

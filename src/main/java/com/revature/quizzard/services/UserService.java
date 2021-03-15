@@ -41,12 +41,13 @@ public class UserService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void register(@Valid User newUser) {
 
-        if (getUserByUsername(newUser.getUsername()) != null) {
+        try {
+            getUserByUsername(newUser.getUsername());
             throw new ResourcePersistenceException("Username is already in use!");
+        } catch (ResourceNotFoundException rnfe) {
+            newUser.setRole(Role.BASIC_USER);
+            userRepo.save(newUser);
         }
-
-        newUser.setRole(Role.BASIC_USER);
-        userRepo.save(newUser);
 
     }
 
@@ -66,13 +67,9 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Set<User> getUsersByRole(@NotNull Role role) {
+    public Set<User> getUsersByRole(Role role) {
 
         Set<User> users;
-
-        if (role == null) {
-            throw new InvalidRequestException();
-        }
 
         users = userRepo.findUsersByRole(role.toString());
 
@@ -85,15 +82,15 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public User getUserByUsername(@NotEmpty String username) {
+    public User getUserByUsername(String username) {
         return userRepo.findUserByUsername(username).orElseThrow(ResourceNotFoundException::new);
     }
 
-    public void confirmAccount(@Min(1) int userId) {
+    public void confirmAccount(int userId) {
         userRepo.confirmAccount(userId);
     }
 
-    public SortedSet<User> sortUsers(@NotEmpty String sortCriterion, @NotEmpty Set<User> usersForSorting) {
+    public SortedSet<User> sortUsers(String sortCriterion, Set<User> usersForSorting) {
 
         SortedSet<User> users = new TreeSet<>(usersForSorting);
 
@@ -123,7 +120,7 @@ public class UserService {
 
     }
 
-    public Principal authenticate(@NotEmpty String username, @NotEmpty String password) {
+    public Principal authenticate(String username, String password) {
 
         User authUser = userRepo.findUserByUsernameAndPassword(username, password).orElseThrow(AuthenticationException::new);
 
@@ -138,7 +135,7 @@ public class UserService {
 
     }
 
-    public void updateProfile(@Valid User updatedUser) {
+    public void updateProfile(User updatedUser) {
 
         Optional<User> persistedUser = userRepo.findUserByUsername(updatedUser.getUsername());
         if (persistedUser.isPresent() && persistedUser.get().getId() != updatedUser.getId()) {

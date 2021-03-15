@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Category {
 
-    CORE_JAVA("Core Java"), JAVA_THREADS("Java Thread"), JAVA_REFLECTION("Java Reflection"),
+    CORE_JAVA("Core Java"), JAVA_THREADS("Java Threads"), JAVA_REFLECTION("Java Reflection"),
     JAVA_COLLECTIONS("Java Collections"), JAVA_STREAMS("Java Streams"), ORACLE_SQL("Oracle SQL"),
     POSTGRE_SQL("PostgreSQL"), ORACLE_PLSQL("Oracle PL/SQL"), POSTGRE_PLPGSQL("PostGre PL/pgSQL"),
     JDBC("JDBC"), HTML("HTML"), CSS("CSS"), CORE_JS("Core JavaScript"),
