@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 public class AuthServiceClient {
 
     private RestTemplate restClient;
-    private String authServiceUrl = "http://localhost:8080/token";
+    private String authServiceUrl = "http://quizzardauth-env.eba-nwg2dphu.us-east-1.elasticbeanstalk.com/token";
 
     @Autowired
     public AuthServiceClient(RestTemplate restClient) {
