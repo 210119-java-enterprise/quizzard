@@ -46,6 +46,7 @@ public class UserService {
             throw new ResourcePersistenceException("Username is already in use!");
         } catch (ResourceNotFoundException rnfe) {
             newUser.setRole(Role.BASIC_USER);
+            newUser.setAccountConfirmed(true); // bypass account confirmation for now
             userRepo.save(newUser);
         }
 
